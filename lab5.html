@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>lab5</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="http://npmcdn.com/leaflet@0.7.7/dist/leaflet.css" />
+	<script src="http://npmcdn.com/leaflet@0.7.7/dist/leaflet.js"></script>
+	<style>
+
+
+    a.nav:link    {color:white; background-color:transparent; text-decoration:none}
+    a.nav:visited {color:white; background-color:transparent; text-decoration:none}
+    a.nav:hover   {color:#00ffff; background-color:transparent; text-decoration:none}
+    a.nav:active  {color:white; background-color:transparent; text-decoration:none}
+
+    .info {
+      padding: 12px;
+      font: 15px Helvetica, sans-serif;
+      background: white;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 9px;
+    }
+
+    .info h4 {
+      margin: 0 0 5px;
+      color: #000000;
+    }
+
+    .legend {
+      text-align: left;
+      line-height: 24px;
+      color: #555;
+    }
+
+    .legend i {
+      width: 24px;
+      height: 24px;
+      float: left;
+      margin-right: 8px;
+      opacity: .65;
+    }
+
+  </style>
+</head>
+
+<body>
+
+    <table style="text-align: left; width: 1024px; height: 768px; margin-left: auto; margin-right: auto; background-color: rgb(194, 252, 194);"
+
+           border="0" cellpadding="2" cellspacing="2">
+
+        <tbody>
+
+            <tr>
+
+                <td style="vertical-align: top; width: 309px; height: 190px;">
+
+                    <br>
+
+                    <big><big><big>Geog 771</big></big></big><br>
+
+                    <br>
+
+                    <br>
+
+                    Name:Zhenxiong Niu<br>
+
+                    UOA：437855855<br>
+
+                    Email:zniu407@auckland.ac.nz<br>
+
+                </td>
+
+                <td style="vertical-align: top; width: 695px; height: 190px;">
+
+                    <img style="width: 699px; height: 186px;" alt="auckland home"
+
+                         src="pic/1266068901.jpg" align="middle"><br>
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td style="vertical-align: top; width: 309px; height: 570px;">
+
+                    <table class="leaflet-control-zoom-in"
+
+                           style="text-align: left; width: 305px; height: 570px;"
+
+                           bgcolor="#ffff99" border="2" cellpadding="2" cellspacing="2">
+
+                        <tbody>
+
+                            <tr>
+
+                                <td bordercolor="#6666FF"
+
+                                    style="vertical-align: middle; text-align: center;">
+
+                                    <strong>
+
+                                        <a href="index.html"><big>Home</big></a><br>
+
+                                    </strong>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td style="vertical-align: middle; text-align: center;">
+
+                                    <strong>
+
+                                        <a href="lab2.html"><big>lab2</big></a><br>
+
+                                    </strong>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td style="vertical-align: middle; text-align: center;">
+
+                                    <strong>
+
+                                        <a href="lab3.html"><big>lab3</big></a><br>
+
+                                    </strong>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td style="vertical-align: middle; text-align: center;">
+
+                                    <strong>
+
+                                        <a href="lab4.html"><big>lab4</big></a><br>
+
+                                    </strong>
+
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td style="vertical-align: middle; text-align: center;">
+
+                                    <strong>
+
+                                        <a href="lab5.html"><big>lab5</big></a><br>
+
+                                    </strong>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <br>
+
+                </td>
+
+                <td style="vertical-align: top; width: 695px; height: 1000px;">
+<span style="color: rgb(51, 51, 255); font-weight: bold;">where does nz tweet more about KiaOra vs the All Blacks? </span> <br>
+                   <div id="map" style="width: 100%; height: 1000px;"></div>
+
+<script type="text/javascript" src="lq.js"></script>
+<script>
+  
+  var map = L.map('map').setView([-41.183534, 172.686926], 6);
+ 	
+ 	L.tileLayer('http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', 
+    {
+   attribution: 'Map tiles &copy; <a href="http://cartodb.com/attributions">Carto </a>| Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Twitter data &copy; <a href="https://twitter.com/mattzook"> @mattzook</a> & <a href="http://www.floatingsheep.org/p/dolly.html">Floating Sheep</a>',
+         }).addTo(map);
+		 
+    function getColor(d) {
+  return  d > 1.01 ? '#0000FF':
+          d > 0.99 ? '#00FF00':
+          d > 0.00001 ? '#FF0080':
+          d < 0.00001  ? '#FFFF00':
+                    'white';
+ }
+
+    function style(feature) {
+      return {
+          fillColor: getColor(feature.properties.LQ),
+          weight: 0.2,
+          opacity: 0.3,
+          color: 'yellow',
+          fillOpacity: 2,      
+		  };
+  }
+
+
+  L.geoJson(lq, {style: style}).addTo(map);
+
+
+
+
+
+
+var legend = L.control({position: 'bottomright'});
+
+                legend.onAdd = function (map) {
+
+                    var div = L.DomUtil.create('div', 'info legend'),
+                       grades = [0, 0.00001,0.99, 1.01],
+                        labels = ['<strong>Relative intensity of tweeting about KiaOra vs. All Blacks</strong>'],
+                        key_labels = ["more All Blacks tweets", "All Blacks ≈ KiaOra", "more KiaOra tweets", "no twitter"],
+                        from, to;
+ 		 for (var i = 0; i < grades.length; i++) { 
+        from = grades[i]; 
+        to = grades[i + 1]; 
+ 
+        labels.push( 
+          '<i style="background:' + getColor(from + 0.00001) + '"></i> ' + 
+           key_labels[i]); 
+      } 
+ 
+      div.innerHTML = labels.join('<br>'); 
+      return div; 
+    }; 
+ 
+    legend.addTo(map); 
+
+</script>	
+                    
+              </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <br>
+
+    <br>
+
+</body>
+
+</html>
+
+
+
