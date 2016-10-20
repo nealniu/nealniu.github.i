@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html><head>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<style type="text/css">
+body, html {width: 100%;height: 100%;overflow: hidden;margin:0;}
+#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+#content {width: 100%;height: 100%;overflow: hidden;  margin-top:0px}
+#r-result{height:43px;width:100%;border:1px double #000}
+#pointshow{ width:100%; height:40px; margin-top:0px;border:1px double #000;}
+#pointbiaozhu{ width:100%; height:23px; margin-top:0px;border:1px double #000; }
+#zidingyibiaozhu{ width:100%; height:48px; margin-top:0px;border:1px double #000; }
+#huitugongju{ width:100%; height:170px; margin-top:0px;border:1px double #000;}
+#gongjiaoluxian{ width:100%; height:69px; margin-top:0px;border:1px double #000; }
+#zhoubiansousuo{ width:100%; height:80px; margin-top:3px;border:1px double #000; }
+
+#route-result{ width:100%; height:100px; margin-top:0px; }
+
+dl,dt,dd,ul,li{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+</style>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&amp;ak=D2d7d63054187479b360acc24cf2f2be"></script><!--加载鼠标绘制工具-->
+
+<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css"><!--加载检索信息窗口-->
+
+<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
+<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css"><title>771 project</title></head><body>
+<table height="100%" width="100%">
+	<tbody><tr height="100%">
+		<td style="width: 726px;">
+		<div id="allmap" style="overflow: hidden; position: relative;">	
+  			  <div id="map" style="height: 100%;"></div>
+   
+ 			   <div id="panelWrap" style="overflow: auto; width: 0px; position: absolute; top: 0px; right: 0px; height: 100%;">
+     		   <div style="margin: -100px 0pt 0pt -10px; width: 20px; height: 200px; color: rgb(153, 153, 153); position: absolute; opacity: 0.5; top: 50%; left: 50%;" id="showOverlayInfo">Here is to show covering information </div>
+      		  <div id="panel" style="position: absolute;"></div>
+    </div>
+</div>	
+				
+				
+				
+				</td>
+		<td style="width: 281px;">
+			<div id="content">
+				<div id="r-result">
+  				  Please type to search:<br><input id="suggestId" size="20" value="location name" type="text"></div>
+				  <div id="searchResultPanel" style="visibility: collapse;">
+				</div>
+				<hr style="margin: 0px;" color="#99cc33" size="2" width="100%">
+				<div id="pointshow">
+					Current click coordinates：<div id="point"></div>
+				</div>
+				<hr style="margin: 0px;" color="#99cc33" size="2" width="100%">
+		       <div id="pointbiaozhu">
+					<input value="Custom Labels" onclick="zdybz('labels')" type="button">
+					<input value="Remove all labels" onclick="qczdybz()" type="button">
+				</div>
+				<hr style="margin: 0px;" color="#99cc33" size="2" width="100%">
+				<div id="zidingyibiaozhu">
+					<input id="zdbj" value="labels name" type="text">
+					<input value="Add Custom Labels" style="margin-top: 0px;" onclick="zdybz('labels')" type="button">
+					
+				</div>
+				<hr style="margin: 0px;" color="#99cc33" size="2" width="100%">
+				<div id="huitugongju">
+					  <dl>
+ 		   	<dt>Drawing Tools </dt>
+  	          <ul>
+   	             <li><label><input name="openClose1" onclick="drawingManager.open()" type="radio">open</label>  
+					<label><input name="openClose1" onclick="drawingManager.close()" checked="checked" type="radio">close</label></li>
+    	        </ul>
+    	    
+    		<dt>Line/area calculation(unit:mile)</dt>
+    	        <ul>
+      	          <li><label><input name="openClose" onclick="drawingManager.enableCalculate()" type="radio">open</label> 
+					 <label><input name="openClose" onclick="drawingManager.disableCalculate()" checked="checked" type="radio">close</label></li>
+        	    </ul>
+     	   
+    	
+    		<dt>Covering Functions:
+  		      
+         		   <ul>
+            		    <li>
+              		      <input value="Get the number of covering" style="margin-top: 2px;" onclick="alert(overlays.length)" type="button">
+              		      <input value="Clear all coverings" style="margin-top: 2px;" onclick="clearAll()" type="button">
+              		      <input value="Get the last covering information" style="margin-top: 2px;" id="getLastOverLay" type="button">
+            		    </li>
+          		  </ul>
+      			  
+        
+   					 </dt></dl>
+				</div>
+				<hr style="margin: 0px;" color="#99cc33" size="2" width="100%">
+			<div id="zhoubiansousuo">
+					Nearby Search：<br>
+					Content：<input id="neirong" value="饭馆(restaurant)" type="text"><br>
+					Location：<input id="didian" value="北京大学" type="text">
+					
+					<input value="Search" onclick="searchfood()" type="button">
+					
+				</div>
+				<hr style="margin: 0px;" color="#99cc33" size="2" width="100%">
+			<div id="gongjiaoluxian">
+					Bus line inquiry：<br>
+					Begin：<input id="qidian" value="北京大学" type="text"><br>
+					End：<input id="zhongdian" value="故宫" type="text">
+					<input value="Search" onclick="searchline()" type="button">
+					
+				</div>
+				<hr style="margin: 0px;" color="#99cc33" size="2" width="100%">
+			<div id="route-result">
+			</div>
+		
+		
+		</div></td>
+	</tr>
+</tbody></table>
+
+
+
+
+<script type="text/javascript">
+
+// 百度地图API功能
+var map = new BMap.Map("map");      //初始化地图，但不设置地图类型
+var point = new BMap.Point(116.315468, 40.00003);
+map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+map.addControl(new BMap.MapTypeControl({mapTypes: [BMAP_NORMAL_MAP,BMAP_HYBRID_MAP]}));     //2D图，卫星图
+map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT}));                    // 左下
+map.setCurrentCity("Beijing");   //由于有3D图，需要设置城市哦
+map.centerAndZoom(point,17);
+map.enableScrollWheelZoom();                            //启用滚轮放大缩小
+
+//自定义版权控件
+var cr = new BMap.CopyrightControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT});   //设置版权控件位置
+map.addControl(cr); //添加版权控件
+
+var bs = map.getBounds();   //返回地图可视区域
+cr.addCopyright({id: 1, content: "<a href='#' style='font-size:10px;color:#000000'>Neal Project</a>", bounds: bs}); 
+
+
+//热点区域搜索功能
+// 百度地图API功能
+function G(id) {
+    return document.getElementById(id);
+}
+var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+    {"input" : "suggestId"
+    ,"location" : map
+});
+ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+var str = "";
+    var _value = e.fromitem.value;
+    var value = "";
+    if (e.fromitem.index > -1) {
+        value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+    }    
+    str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+    
+    value = "";
+    if (e.toitem.index > -1) {
+        _value = e.toitem.value;
+        value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+    }    
+    str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+	
+    
+});
+
+var myValue;
+ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+var _value = e.item.value;
+    myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+  
+    setPlace();
+});
+
+function setPlace(){
+    map.clearOverlays();    //清除地图上所有覆盖物
+    function myFun(){
+        var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+        map.centerAndZoom(pp, 18);
+        map.addOverlay(new BMap.Marker(pp));    //添加标注
+    }
+    var local = new BMap.LocalSearch(map, { //智能搜索
+      onSearchComplete: myFun
+    });
+    local.search(myValue);
+}
+
+var isLabel=0;
+map.addEventListener("click", function(e){
+  document.getElementById("point").innerHTML = e.point.lng + ", " + e.point.lat;
+  if(isLabel==1)
+  {
+  	//创建小狐狸
+	var pt = new BMap.Point(e.point.lng, e.point.lat);
+	var myIcon = new BMap.Icon("a23.png", new BMap.Size(33,57));
+	var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
+	map.addOverlay(marker2); 
+	isLabel=0;
+  }
+  if(isLabel==2)
+  {
+  	var tt=document.getElementById('zdbj').value;
+	var pt = new BMap.Point(e.point.lng, e.point.lat);
+	var opts = {
+			  position : pt,    // 指定文本标注所在的地理位置
+ 			 offset   : new BMap.Size(10, -30)    //设置文本偏移量
+ 				}
+	var label = new BMap.Label(tt, opts);  // 创建文本标注对象
+		label.setStyle({
+			 color : "red",
+			 fontSize : "12px",
+			 height : "20px",
+			 lineHeight : "20px",
+			 fontFamily:"微软雅黑"
+				 });
+		map.addOverlay(label);  
+	
+	isLabel=0;
+  }
+
+  //让小狐狸说话（创建信息窗口）
+	var infoWindow2 = new BMap.InfoWindow("<p style='font-size:14px;'>Can not find road</p><p style='font-size:18px;'>Where are you??</p>");
+	marker2.addEventListener("click", function(){this.openInfoWindow(infoWindow2);});
+	
+  
+});
+
+function  zdybz(para)
+{
+	if(para=="标注")
+	{
+		isLabel=1;  //绘制定义符号
+	}
+	if(para=="标记")
+	{
+		isLabel=2;  //绘制自定义标记
+	}
+	
+}
+
+function  qczdybz()
+{
+	var count=map.getOverlays().length;
+	
+	for(var i=1;i<=count;i++)
+	{
+		map.removeOverlay(map.getOverlays()[1]);
+	}
+	
+}
+
+	//获得最后一个覆盖物信息
+  $("getLastOverLay").onclick = function()
+	{
+		alert('sdds');
+        if(overlays.length){
+            alert(overlays[overlays.length - 1]);
+        }else{
+            alert("no covering");
+        }
+    }
+
+     
+    
+    var overlays = [];
+    //回调获得覆盖物信息
+    var overlaycomplete = function(e){
+        overlays.push(e.overlay);
+        var result = "";
+        result = "<p>";
+        result += e.drawingMode + ":";
+        if (e.drawingMode == BMAP_DRAWING_MARKER) {
+            result += ' coordinate：' + e.overlay.getPosition().lng + ',' + e.overlay.getPosition().lat;
+            if ($('isInfowindow').checked) {
+                searchInfoWindow.open(e.overlay);
+            }
+        }
+        if (e.drawingMode == BMAP_DRAWING_CIRCLE) {
+            result += 'Radius ：' + e.overlay.getRadius();
+            result += ' center point：' + e.overlay.getCenter().lng + "," + e.overlay.getCenter().lat;
+        }
+        if (e.drawingMode == BMAP_DRAWING_POLYLINE || e.drawingMode == BMAP_DRAWING_POLYGON || e.drawingMode == BMAP_DRAWING_RECTANGLE) {
+            result += ' The number of points：' + e.overlay.getPath().length;
+        }
+        result += "</p>";
+        $("showOverlayInfo").style.display = "none";
+        $("panel").innerHTML += result; //将绘制的覆盖物信息结果输出到结果面板
+    };
+
+    var styleOptions = {
+        strokeColor:"red",    //边线颜色。
+        fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
+        strokeWeight: 3,       //边线的宽度，以像素为单位。
+        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。
+        strokeStyle: 'solid' //边线的样式，solid或dashed。
+    }
+    //实例化鼠标绘制工具
+    var drawingManager = new BMapLib.DrawingManager(map, {
+        isOpen: false, //是否开启绘制模式
+        enableDrawingTool: true, //是否显示工具栏
+        drawingToolOptions: {
+            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+            offset: new BMap.Size(5, 5), //偏离值
+            scale: 0.8 //工具栏缩放比例
+        },
+        circleOptions: styleOptions, //圆的样式
+        polylineOptions: styleOptions, //线的样式
+        polygonOptions: styleOptions, //多边形的样式
+        rectangleOptions: styleOptions //矩形的样式
+    });
+
+    
+    //添加鼠标绘制工具监听事件，用于获取绘制结果
+    drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+    
+
+    function $(id){
+        return document.getElementById(id);
+    }
+
+    function clearAll() {
+        for(var i = 0; i < overlays.length; i++){
+            map.removeOverlay(overlays[i]);
+        }
+        overlays.length = 0
+    }
+
+    var isPanelShow = false;
+    //显示结果面板动作
+    $("showPanelBtn").onclick = showPanel;
+    function showPanel(){
+        if (isPanelShow == false) {
+            isPanelShow = true;
+            $("showPanelBtn").style.right = "230px";
+            $("panelWrap").style.width = "230px";
+            $("map").style.marginRight = "230px";
+            $("showPanelBtn").innerHTML = "Hide drawing information<br/>>";
+        } else {
+            isPanelShow = false;
+            $("showPanelBtn").style.right = "0px";
+            $("panelWrap").style.width = "0px";
+            $("map").style.marginRight = "0px";
+            $("showPanelBtn").innerHTML = "Show drawing information<br/><";
+        }
+    }
+
+	//全景地图
+	// 覆盖区域图层测试
+	map.addTileLayer(new BMap.PanoramaCoverageLayer());
+
+	var stCtrl = new BMap.PanoramaControl(); //构造全景控件
+	stCtrl.setOffset(new BMap.Size(20, 20));
+	map.addControl(stCtrl);//添加全景控件
+
+	
+		
+	function searchline()
+	{
+		
+		var transit = new BMap.TransitRoute(map, {
+ 		 renderOptions: {map: map,panel:"route-result"}
+		});
+		var q=document.getElementById("qidian").value;
+		var z=document.getElementById("zhongdian").value;
+		
+		transit.search(q, z);
+	}
+	function searchfood()
+	{
+		var local = new BMap.LocalSearch(map, {
+ 	 renderOptions:{map: map, autoViewport:true}
+	});
+		var d=document.getElementById("didian").value;
+		var n=document.getElementById("neirong").value;
+		local.searchNearby(n, d);
+	}
+
+</script>
+</body></html>
